@@ -1,0 +1,30 @@
+{
+    "subscription": {
+        "id": 5546889
+    },
+    "epr": {
+        "commercial_register": 123564,
+        "tax_number": 55555555,
+        "name": "test"
+    },
+    "customer": {
+        "phone_number": 966536922003
+    },
+    "invoice": {
+        "qr_code": 553,
+        "invoice_date": "2024-04-05",
+        "total_amount": 150.00
+    },
+    "invoice_items": [
+        {
+            "name": "Product A",
+            "price": 50.00,
+            "quantity": 2
+        },
+        {
+            "name": "Product B",
+            "price": 25.00,
+            "quantity": 3
+        }
+    ]
+}
