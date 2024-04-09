@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SubscriptionDto {
 
-    private Long subscriptionId;
+    private Long id;
+
+    private Long subscriptionNumber;
 
 }

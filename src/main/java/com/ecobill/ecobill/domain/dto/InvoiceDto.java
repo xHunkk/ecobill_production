@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InvoiceDto {
 
-    private Integer invoiceId;
+    private Long id;
 
-    private String name;
+    private Long qrCode;
 
     private EPREntity epr;
 
@@ -26,7 +26,7 @@ public class InvoiceDto {
 
     private CustomerEntity customer;
 
-    private Date invoiceDate;
+    private Date creationDate;
 
     private Long totalAmount;
 

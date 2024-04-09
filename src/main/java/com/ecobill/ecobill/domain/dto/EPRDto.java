@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class EPRDto {
 
+    private Long id;
+
     private Long commercialRegister;
 
     private Long taxNumber;
