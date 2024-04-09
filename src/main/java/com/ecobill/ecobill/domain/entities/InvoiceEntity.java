@@ -43,7 +43,7 @@ public class InvoiceEntity {
     @JoinColumn(name = "customer_phone_number", referencedColumnName = "phone_number")
     private CustomerEntity customer;
 
-    private Date invoiceDate;
+    private Date creationDate;
 
     private Long totalAmount;
 

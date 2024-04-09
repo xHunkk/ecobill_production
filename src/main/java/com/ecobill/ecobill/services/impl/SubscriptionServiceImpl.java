@@ -25,8 +25,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public SubscriptionEntity createSubscription(Map<String, Object> subscriptionMap) {
         HashMap<String, Object> subscriptionHashMap = new HashMap<>(subscriptionMap);
         SubscriptionEntity subscriptionEntity = SubscriptionEntity.builder()
-                .subscriptionId(
-                        conversionUtils.integerToLongConversion((Integer) subscriptionHashMap.get("id")))
+                .subscriptionNumber(
+                        conversionUtils
+                                .integerToLongConversion((Integer) subscriptionHashMap.get("subscription_number")))
                 .build();
         return subscriptionRepository.save(subscriptionEntity);
 

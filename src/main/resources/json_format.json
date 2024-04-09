@@ -1,6 +1,6 @@
 {
     "subscription": {
-        "id": 5546889
+        "subscription_number": 5546889
     },
     "epr": {
         "commercial_register": 123564,
@@ -12,7 +12,7 @@
     },
     "invoice": {
         "qr_code": 553,
-        "invoice_date": "2024-04-05",
+        "created_at": "2024-04-05",
         "total_amount": 150.00
     },
     "invoice_items": [
