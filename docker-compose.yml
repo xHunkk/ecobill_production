@@ -3,9 +3,9 @@ version: '3.1'
 services:
 
   db:
-    image: postgres
+    image: ecobill_db
     ports:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_PASSWORD: changemeinprod!
+      POSTGRES_PASSWORD: ecobill
