@@ -1,7 +1,6 @@
 package com.ecobill.ecobill.services.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +11,6 @@ import com.ecobill.ecobill.domain.entities.InvoiceItemEntity;
 import com.ecobill.ecobill.repositories.InvoiceItemRepository;
 import com.ecobill.ecobill.services.InvoiceItemService;
 import com.ecobill.ecobill.utils.ConversionUtils;
-
-import jakarta.persistence.EntityManager;
 
 @Service
 public class InvoiceItemServiceImpl implements InvoiceItemService {

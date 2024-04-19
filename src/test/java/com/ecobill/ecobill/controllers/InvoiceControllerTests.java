@@ -1,12 +1,19 @@
 package com.ecobill.ecobill.controllers;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ExtendWith(SpringExtension.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @AutoConfigureMockMvc
+@ActiveProfiles("test")
 public class InvoiceControllerTests {
 
         private MockMvc mockMvc;
@@ -34,41 +42,14 @@ public class InvoiceControllerTests {
 
         @Test
         public void testThatCreateInvoiceSuccessfullyReturnsHttp201Created() throws Exception {
-                String jsonString = "{\n" +
-                                "    \"subscription\": {\n" +
-                                "        \"subscription_number\": 5546889\n" +
-                                "    },\n" +
-                                "    \"epr\": {\n" +
-                                "        \"commercial_register\": 123564,\n" +
-                                "        \"tax_number\": 55555555,\n" +
-                                "        \"name\": \"test\"\n" +
-                                "    },\n" +
-                                "    \"customer\": {\n" +
-                                "        \"phone_number\": 966536922003\n" +
-                                "    },\n" +
-                                "    \"invoice\": {\n" +
-                                "        \"qr_code\": 553,\n" +
-                                "        \"created_at\": \"2024-04-05\",\n" +
-                                "        \"total_amount\": 150.00\n" +
-                                "    },\n" +
-                                "    \"invoice_items\": [\n" +
-                                "        {\n" +
-                                "            \"name\": \"Product A\",\n" +
-                                "            \"price\": 50.00,\n" +
-                                "            \"quantity\": 2\n" +
-                                "        },\n" +
-                                "        {\n" +
-                                "            \"name\": \"Product B\",\n" +
-                                "            \"price\": 25.00,\n" +
-                                "            \"quantity\": 3\n" +
-                                "        }\n" +
-                                "    ]\n" +
-                                "}";
+
+                Resource resource = new ClassPathResource("test_cases_json.json");
+                String jsonContent = new String(Files.readAllBytes(Paths.get(resource.getURI())));
 
                 mockMvc.perform(
                                 MockMvcRequestBuilders.post("/invoices")
                                                 .contentType(MediaType.APPLICATION_JSON)
-                                                .content(jsonString))
+                                                .content(jsonContent))
                                 .andExpect(
                                                 MockMvcResultMatchers.status().isCreated());
 
