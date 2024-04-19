@@ -28,7 +28,7 @@ public class EPRServiceImpl implements EPRService {
         EPREntity eprEntity = EPREntity.builder()
                 .commercialRegister(
                         conversionUtils.integerToLongConversion((Integer) eprHashMap.get("commercial_register")))
-                .taxNumber(conversionUtils.integerToLongConversion((Integer) eprHashMap.get("tax_number")))
+                .taxNumber((Long) eprHashMap.get("tax_number"))
                 .name((String) eprHashMap.get("name"))
                 .build();
         eprEntity.setSubscription(subscriptionEntity);
