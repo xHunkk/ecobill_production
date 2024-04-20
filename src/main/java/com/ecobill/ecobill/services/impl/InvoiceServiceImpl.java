@@ -31,7 +31,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         try {
             invoiceEntity = InvoiceEntity.builder()
-                    .qrCode(conversionUtils.integerToLongConversion((Integer) invoiceHashMap.get("qr_code")))
+                    .qrCode((Long) invoiceHashMap.get("qr_code"))
                     .epr(eprEntity).eprTaxNumber(eprEntity).customer(customerEntity)
                     .creationDate(conversionUtils.StringToDateConversion((String) invoiceHashMap.get("created_at")))
                     .totalAmount(conversionUtils.doubleToLongConversion((Double) invoiceHashMap.get("total_amount")))
