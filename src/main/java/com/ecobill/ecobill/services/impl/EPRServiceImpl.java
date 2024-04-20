@@ -2,6 +2,7 @@ package com.ecobill.ecobill.services.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,13 @@ public class EPRServiceImpl implements EPRService {
                 .build();
         eprEntity.setSubscription(subscriptionEntity);
 
-        return eprRepository.save(eprEntity);
+        Optional<EPREntity> eprEntityOptional = eprRepository
+                .findByCommercialRegister(eprEntity.getCommercialRegister());
 
+        if (!eprEntityOptional.isPresent()) {
+            return eprRepository.save(eprEntity);
+        } else {
+            return eprEntityOptional.get();
+        }
     }
 }

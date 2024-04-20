@@ -2,6 +2,7 @@ package com.ecobill.ecobill.services.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                         conversionUtils
                                 .integerToLongConversion((Integer) subscriptionHashMap.get("subscription_number")))
                 .build();
-        return subscriptionRepository.save(subscriptionEntity);
+
+        Optional<SubscriptionEntity> subscriptionEntityOptional = subscriptionRepository
+                .findBySubscriptionNumber(subscriptionEntity.getSubscriptionNumber());
+
+        if (!subscriptionEntityOptional.isPresent()) {
+            return subscriptionRepository.save(subscriptionEntity);
+        } else {
+            return subscriptionEntityOptional.get();
+        }
 
     }
 

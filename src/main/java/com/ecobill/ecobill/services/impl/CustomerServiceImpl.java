@@ -2,6 +2,7 @@ package com.ecobill.ecobill.services.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,14 @@ public class CustomerServiceImpl implements CustomerService {
                 .phoneNumber((Long) customerHashMap.get("phone_number"))
                 .build();
 
-        return customerRepository.save(customerEntity);
+        Optional<CustomerEntity> customerEntityOptional = customerRepository
+                .findByPhoneNumber(customerEntity.getPhoneNumber());
+
+        if (!customerEntityOptional.isPresent()) {
+            return customerRepository.save(customerEntity);
+        } else {
+            return customerEntityOptional.get();
+        }
 
     }
 
