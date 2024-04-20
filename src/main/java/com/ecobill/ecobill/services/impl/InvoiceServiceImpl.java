@@ -2,6 +2,7 @@ package com.ecobill.ecobill.services.impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -36,8 +37,15 @@ public class InvoiceServiceImpl implements InvoiceService {
                     .creationDate(conversionUtils.StringToDateConversion((String) invoiceHashMap.get("created_at")))
                     .totalAmount(conversionUtils.doubleToLongConversion((Double) invoiceHashMap.get("total_amount")))
                     .build();
-            return invoiceRepository.save(invoiceEntity);
 
+            Optional<InvoiceEntity> invoiceEntityOptional = invoiceRepository
+                    .findByQrCode(invoiceEntity.getQrCode());
+
+            if (!invoiceEntityOptional.isPresent()) {
+                return invoiceRepository.save(invoiceEntity);
+            } else {
+                return invoiceEntityOptional.get();
+            }
         } catch (Exception e) {
             System.out.println(e);
             return null;
