@@ -2,9 +2,13 @@ package com.ecobill.ecobill.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.ecobill.ecobill.domain.dto.InvoiceDto;
 
 import com.ecobill.ecobill.domain.entities.CustomerEntity;
 import com.ecobill.ecobill.domain.entities.EPREntity;
@@ -20,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/invoices")
 public class InvoiceController {
 
     private InvoiceService invoiceService;
@@ -38,7 +43,7 @@ public class InvoiceController {
         this.invoiceItemService = invoiceItemService;
     }
 
-    @PostMapping(path = "/invoices")
+    @PostMapping()
     public ResponseEntity<Void> createInvoice(@RequestBody Map<String, Object> requestBody) {
         try {
             Map<String, Object> eprMap = (Map<String, Object>) requestBody.get("epr");
@@ -57,5 +62,25 @@ public class InvoiceController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+
+    }
+
+    @GetMapping("/range")
+    public List<InvoiceDto> findInvoice(
+            @RequestParam(name = "min", required = false) Long lower,
+            @RequestParam(name = "max", required = false) Long upper) {
+        lower = lower == null ? 0 : lower;
+        upper = upper == null ? Long.MAX_VALUE : upper;
+        return invoiceService.getInvoiceByAmountLimits(lower, upper);
+    }
+
+    @GetMapping("/categories")
+    public List<InvoiceDto> CategorizeInvoices(@RequestParam(name = "category") String category) {
+        return invoiceService.getInvoiceByEPRCategory(category);
+    }
+
+    @GetMapping("/companies")
+    public List<InvoiceDto> findInvoiceByEPR(@RequestParam(name = "company") String name) {
+        return invoiceService.getByEPR(name);
     }
 }

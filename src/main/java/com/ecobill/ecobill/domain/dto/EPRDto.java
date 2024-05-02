@@ -23,4 +23,6 @@ public class EPRDto {
 
     private SubscriptionEntity subscription;
 
+    private String category;
+
 }

@@ -31,6 +31,7 @@ public class EPRServiceImpl implements EPRService {
                         conversionUtils.integerToLongConversion((Integer) eprHashMap.get("commercial_register")))
                 .taxNumber((Long) eprHashMap.get("tax_number"))
                 .name((String) eprHashMap.get("name"))
+                .category((String) eprHashMap.get("category"))
                 .build();
         eprEntity.setSubscription(subscriptionEntity);
 
@@ -43,4 +44,5 @@ public class EPRServiceImpl implements EPRService {
             return eprEntityOptional.get();
         }
     }
+
 }

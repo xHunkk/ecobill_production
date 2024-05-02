@@ -5,7 +5,8 @@
     "epr": {
         "commercial_register": 1234567890,
         "tax_number": 111112222233333,
-        "name": "testwq"
+        "name": "testwq",
+        "category": "Restaurant"
     },
     "customer": {
         "phone_number": 966553604747

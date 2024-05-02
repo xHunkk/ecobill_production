@@ -37,4 +37,7 @@ public class EPREntity {
     @JoinColumn(name = "subscription_id")
     private SubscriptionEntity subscription;
 
+    @Column(name = "category")
+    private String category;
+
 }

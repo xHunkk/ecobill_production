@@ -8,11 +8,11 @@ import com.ecobill.ecobill.domain.entities.EPREntity;
 import com.ecobill.ecobill.mappers.Mapper;
 
 @Component
-public class EPRMapperImpl implements Mapper<EPREntity, EPRDto> {
+public class EPRMapper implements Mapper<EPREntity, EPRDto> {
 
     private ModelMapper modelMapper;
 
-    public EPRMapperImpl(ModelMapper modelMapper) {
+    public EPRMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 

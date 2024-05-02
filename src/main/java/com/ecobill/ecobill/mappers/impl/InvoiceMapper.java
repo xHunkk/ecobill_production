@@ -8,11 +8,11 @@ import com.ecobill.ecobill.domain.entities.InvoiceEntity;
 import com.ecobill.ecobill.mappers.Mapper;
 
 @Component
-public class InvoiceMapperImpl implements Mapper<InvoiceEntity, InvoiceDto> {
+public class InvoiceMapper implements Mapper<InvoiceEntity, InvoiceDto> {
 
     private ModelMapper modelMapper;
 
-    public InvoiceMapperImpl(ModelMapper modelMapper) {
+    public InvoiceMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
