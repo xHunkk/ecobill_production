@@ -20,6 +20,7 @@ import com.ecobill.ecobill.services.InvoiceItemService;
 import com.ecobill.ecobill.services.InvoiceService;
 import com.ecobill.ecobill.services.SubscriptionService;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +45,7 @@ public class InvoiceController {
     }
 
     @PostMapping()
-    public ResponseEntity<Void> createInvoice(@RequestBody Map<String, Object> requestBody) {
+    public ResponseEntity<Void> createNewInvoice(@RequestBody Map<String, Object> requestBody) {
         try {
             Map<String, Object> eprMap = (Map<String, Object>) requestBody.get("epr");
             Map<String, Object> customerMap = (Map<String, Object>) requestBody.get("customer");
@@ -65,22 +66,37 @@ public class InvoiceController {
 
     }
 
-    @GetMapping("/range")
-    public List<InvoiceDto> findInvoice(
-            @RequestParam(name = "min", required = false) Long lower,
-            @RequestParam(name = "max", required = false) Long upper) {
-        lower = lower == null ? 0 : lower;
-        upper = upper == null ? Long.MAX_VALUE : upper;
-        return invoiceService.getInvoiceByAmountLimits(lower, upper);
+    @GetMapping("/price_range")
+    public List<InvoiceDto> findInvoiceByPriceRange(
+            @RequestParam(name = "min", required = false) Long lowerLimit,
+            @RequestParam(name = "max", required = false) Long upperLimit) {
+        lowerLimit = lowerLimit == null ? 0 : lowerLimit;
+        upperLimit = upperLimit == null ? Long.MAX_VALUE : upperLimit;
+        return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit);
     }
 
     @GetMapping("/categories")
-    public List<InvoiceDto> CategorizeInvoices(@RequestParam(name = "category") String category) {
+    public List<InvoiceDto> categorizeInvoices(@RequestParam(name = "category") String category) {
         return invoiceService.getInvoiceByEPRCategory(category);
     }
 
     @GetMapping("/companies")
-    public List<InvoiceDto> findInvoiceByEPR(@RequestParam(name = "company") String name) {
-        return invoiceService.getByEPR(name);
+    public List<InvoiceDto> findInvoiceByEPRName(@RequestParam(name = "company") String name) {
+        return invoiceService.getInvoiceByEPRName(name);
+    }
+
+    @GetMapping("/date")
+    public List<InvoiceDto> findInvoiceByDateBetween(Long userNumber, Timestamp lower, Timestamp upper) {
+        return invoiceService.getByCreationDateBetweenAndUserNumber(userNumber, lower, upper);
+    }
+
+    @GetMapping("/number_range")
+    public List<InvoiceDto> findUserInvoiceInRange(Long userNumber, int start, int end) {
+        return invoiceService.getInvoicesForUserInRange(userNumber, start, end);
+    }
+
+    @GetMapping("/statistics")
+    public List<String> getUserStatistics(Long userNumber, int numberOfMonths) {
+        return invoiceService.printUserStatistics(userNumber, numberOfMonths);
     }
 }
