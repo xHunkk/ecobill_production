@@ -1,5 +1,7 @@
 package com.ecobill.ecobill.services.impl;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,7 +67,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getByEPR(String name) {
+    public List<InvoiceDto> getInvoiceByEPRName(String name) {
         EPREntity eprEntity = eprRepository.findByName(name);
         try {
             List<InvoiceDto> invoiceDtos = invoiceRepository.findAllByEpr(eprEntity)
@@ -94,9 +96,83 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<InvoiceDto> invoiceDtos = new ArrayList<>();
 
         for (EPREntity eprEntity : eprEntities) {
-            invoiceDtos.addAll(getByEPR(eprEntity.getName()));
+            invoiceDtos.addAll(getInvoiceByEPRName(eprEntity.getName()));
         }
         return invoiceDtos;
+    }
+
+    @Override
+    public List<InvoiceDto> getByCreationDateBetweenAndUserNumber(Long userNumber, Timestamp lower, Timestamp upper) {
+        try {
+            return invoiceRepository.findAllByCustomerPhoneNumberAndCreationDateBetween(userNumber, lower, upper)
+                    .stream()
+                    .map(invoiceMapper::mapTo)
+                    .collect(Collectors.toList());
+        } catch (NullPointerException e) {
+            System.out.println(e);
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end) {
+        int limit = end - start + 1;
+        int offset = start - 1; // Assuming the first invoice has an index of 1
+        try {
+            return invoiceRepository.findInvoicesByCustomerPhoneNumberWithOffset(userNumber, limit, offset)
+                    .stream()
+                    .map(invoiceMapper::mapTo)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println(e);
+            return new ArrayList<>();
+        }
+    }
+
+    @Override
+    public List<String> printUserStatistics(Long userNumber, int numberOfMonths) {
+        Timestamp lower = Timestamp.valueOf(LocalDateTime.now().minusMonths(numberOfMonths));
+        Timestamp upper = Timestamp.valueOf(LocalDateTime.now());
+
+        List<InvoiceDto> invoices = getByCreationDateBetweenAndUserNumber(userNumber, lower, upper);
+
+        double averageSpent = invoices.stream()
+                .mapToDouble(InvoiceDto::getTotalAmount)
+                .average()
+                .orElse(0.0);
+
+        EPREntity mostVisitedCompany = invoices.stream()
+                .collect(Collectors.groupingBy(InvoiceDto::getEpr, Collectors.counting()))
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+
+        String mostVisitedCompanyName = mostVisitedCompany != null ? mostVisitedCompany.getName()
+                : "No company visited";
+
+        double thisMonthSpending = invoices.stream()
+                .filter(invoice -> invoice.getCreationDate()
+                        .after(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
+                .mapToDouble(InvoiceDto::getTotalAmount)
+                .sum();
+
+        double lastMonthSpending = invoices.stream()
+                .filter(invoice -> invoice.getCreationDate()
+                        .before(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
+                .mapToDouble(InvoiceDto::getTotalAmount)
+                .sum();
+
+        List<String> userStatistics = new ArrayList<>();
+        userStatistics.add(String.valueOf(userNumber));
+        userStatistics.add(String.format("%.2f", averageSpent));
+        userStatistics.add(mostVisitedCompanyName);
+        userStatistics.add(String.format("%.2f", thisMonthSpending));
+        userStatistics.add(String.format("%.2f", lastMonthSpending));
+        userStatistics.add(String.format("%.2f", (thisMonthSpending - lastMonthSpending)));
+
+        return userStatistics;
     }
 
 }
