@@ -1,6 +1,7 @@
 package com.ecobill.ecobill.services;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,6 @@ public interface InvoiceService {
 
     List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end);
 
-    List<String> printUserStatistics(Long userNumber, int numberOfMonths);
+    HashMap<String, Object> getCustomerStatistics(Long phoneNumber, int numberOfMonths);
 
 }

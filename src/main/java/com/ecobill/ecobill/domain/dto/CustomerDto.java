@@ -15,7 +15,9 @@ public class CustomerDto {
 
     private Long phoneNumber;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
     private String username;
 

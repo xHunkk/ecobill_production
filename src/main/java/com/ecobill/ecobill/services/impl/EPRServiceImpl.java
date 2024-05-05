@@ -27,10 +27,12 @@ public class EPRServiceImpl implements EPRService {
     public EPREntity createEpr(Map<String, Object> eprMap, SubscriptionEntity subscriptionEntity) {
         HashMap<String, Object> eprHashMap = new HashMap<>(eprMap);
         EPREntity eprEntity = EPREntity.builder()
+                .logo((String) eprHashMap.get("logo"))
                 .commercialRegister(
                         conversionUtils.integerToLongConversion((Integer) eprHashMap.get("commercial_register")))
                 .taxNumber((Long) eprHashMap.get("tax_number"))
                 .name((String) eprHashMap.get("name"))
+                .fullName((String) eprHashMap.get("full_name"))
                 .category((String) eprHashMap.get("category"))
                 .build();
         eprEntity.setSubscription(subscriptionEntity);

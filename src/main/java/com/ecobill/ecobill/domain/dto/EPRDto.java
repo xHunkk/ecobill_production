@@ -15,11 +15,15 @@ public class EPRDto {
 
     private Long id;
 
+    private String logo;
+
     private Long commercialRegister;
 
     private Long taxNumber;
 
     private String name;
+
+    private String fullName;
 
     private SubscriptionEntity subscription;
 

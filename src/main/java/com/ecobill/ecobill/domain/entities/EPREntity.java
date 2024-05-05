@@ -25,6 +25,8 @@ public class EPREntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String logo;
+
     @Column(name = "commercial_register", unique = true)
     private Long commercialRegister;
 
@@ -32,6 +34,8 @@ public class EPREntity {
     private Long taxNumber;
 
     private String name;
+
+    private String fullName;
 
     @OneToOne
     @JoinColumn(name = "subscription_id")

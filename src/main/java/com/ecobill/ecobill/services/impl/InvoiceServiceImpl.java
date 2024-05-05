@@ -130,11 +130,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<String> printUserStatistics(Long userNumber, int numberOfMonths) {
+    public HashMap<String, Object> getCustomerStatistics(Long phoneNumber, int numberOfMonths) {
         Timestamp lower = Timestamp.valueOf(LocalDateTime.now().minusMonths(numberOfMonths));
         Timestamp upper = Timestamp.valueOf(LocalDateTime.now());
 
-        List<InvoiceDto> invoices = getByCreationDateBetweenAndUserNumber(userNumber, lower, upper);
+        List<InvoiceDto> invoices = getByCreationDateBetweenAndUserNumber(phoneNumber, lower, upper);
 
         double averageSpent = invoices.stream()
                 .mapToDouble(InvoiceDto::getTotalAmount)
@@ -164,15 +164,26 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .mapToDouble(InvoiceDto::getTotalAmount)
                 .sum();
 
-        List<String> userStatistics = new ArrayList<>();
-        userStatistics.add(String.valueOf(userNumber));
-        userStatistics.add(String.format("%.2f", averageSpent));
-        userStatistics.add(mostVisitedCompanyName);
-        userStatistics.add(String.format("%.2f", thisMonthSpending));
-        userStatistics.add(String.format("%.2f", lastMonthSpending));
-        userStatistics.add(String.format("%.2f", (thisMonthSpending - lastMonthSpending)));
+        HashMap<String, Object> statisticsHashMap = new HashMap<>();
 
-        return userStatistics;
+        statisticsHashMap.put("phoneNumber", phoneNumber);
+        statisticsHashMap.put("averageSpent", String.format("%.2f", averageSpent));
+        statisticsHashMap.put("mostVisitedCompany", mostVisitedCompanyName);
+        statisticsHashMap.put("thisMonthSpendings", String.format("%.2f", thisMonthSpending));
+        statisticsHashMap.put("lastMonthSpendings", String.format("%.2f", lastMonthSpending));
+        statisticsHashMap.put("monthlySpendingsDifference",
+                String.format("%.2f", (thisMonthSpending - lastMonthSpending)));
+
+        // List<String> userStatistics = new ArrayList<>();
+        // userStatistics.add(String.valueOf(phoneNumber));
+        // userStatistics.add(String.format("%.2f", averageSpent));
+        // userStatistics.add(mostVisitedCompanyName);
+        // userStatistics.add(String.format("%.2f", thisMonthSpending));
+        // userStatistics.add(String.format("%.2f", lastMonthSpending));
+        // userStatistics.add(String.format("%.2f", (thisMonthSpending -
+        // lastMonthSpending)));
+
+        return statisticsHashMap;
     }
 
 }
