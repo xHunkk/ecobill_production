@@ -2,6 +2,7 @@ package com.ecobill.ecobill.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.ecobill.ecobill.domain.dto.InvoiceDto;
-
+import com.ecobill.ecobill.domain.dto.InvoiceItemDto;
 import com.ecobill.ecobill.domain.entities.CustomerEntity;
 import com.ecobill.ecobill.domain.entities.EPREntity;
 import com.ecobill.ecobill.domain.entities.InvoiceEntity;
@@ -23,7 +24,9 @@ import com.ecobill.ecobill.services.SubscriptionService;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -73,6 +76,11 @@ public class InvoiceController {
         lowerLimit = lowerLimit == null ? 0 : lowerLimit;
         upperLimit = upperLimit == null ? Long.MAX_VALUE : upperLimit;
         return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit);
+    }
+
+    @GetMapping("/items")
+    public List<InvoiceItemDto> findInvoiceItemsByQrCode(@RequestParam(name = "qr_code") Long qrCode) {
+        return invoiceItemService.getInvoiceItemByQrCode(qrCode);
     }
 
     @GetMapping("/categories")
