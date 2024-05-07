@@ -26,4 +26,8 @@ public interface InvoiceService {
 
     HashMap<String, Object> getCustomerStatistics(Long phoneNumber, int numberOfMonths);
 
+    List<InvoiceDto> getInvoiceByPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
+            Long phoneNumber, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
+            String name);
+
 }

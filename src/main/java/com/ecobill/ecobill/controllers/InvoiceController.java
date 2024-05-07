@@ -123,14 +123,28 @@ public class InvoiceController {
         return invoiceService.getInvoiceByEPRCategory(category);
     }
 
+    @GetMapping("/all_filters")
+    public List<InvoiceDto> findInvoiceByCreationDateAndTotalAmountAndEprName(
+            @RequestParam(name = "phone_number") Long phoneNumber,
+            @RequestParam(name = "before_date") Timestamp beforeDate,
+            @RequestParam(name = "after_date") Timestamp afterDate,
+            @RequestParam(name = "min", required = false) Long lowerLimit,
+            @RequestParam(name = "max", required = false) Long upperLimit,
+            @RequestParam(name = "company") String name) {
+        return invoiceService.getInvoiceByPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(phoneNumber,
+                beforeDate, afterDate, lowerLimit, upperLimit, name);
+    }
+
     @GetMapping("/companies")
     public List<InvoiceDto> findInvoiceByEPRName(@RequestParam(name = "company") String name) {
         return invoiceService.getInvoiceByEPRName(name);
     }
 
     @GetMapping("/date")
-    public List<InvoiceDto> findInvoiceByDateBetween(Long userNumber, Timestamp lower, Timestamp upper) {
-        return invoiceService.getByCreationDateBetweenAndUserNumber(userNumber, lower, upper);
+    public List<InvoiceDto> findInvoiceByDateBetween(@RequestParam(name = "phone_number") Long phoneNumber,
+            @RequestParam(name = "before_date") Timestamp beforeDate,
+            @RequestParam(name = "after_date") Timestamp afterDate) {
+        return invoiceService.getByCreationDateBetweenAndUserNumber(phoneNumber, beforeDate, afterDate);
     }
 
     @GetMapping("/number_range")

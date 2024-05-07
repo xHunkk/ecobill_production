@@ -16,10 +16,13 @@ public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Integer>
 
     List<InvoiceEntity> findAllByEpr(EPREntity epr);
 
-    List<InvoiceEntity> findAllByTotalAmountBetween(Long lower, Long upper);
+    List<InvoiceEntity> findAllByTotalAmountBetween(Long lowerLimit, Long upperLimit);
 
-    List<InvoiceEntity> findAllByCustomerPhoneNumberAndCreationDateBetween(Long userNumber, Timestamp lower,
-            Timestamp upper);
+    List<InvoiceEntity> findAllByCustomerPhoneNumberAndCreationDateBetween(Long phoneNumber, Timestamp beforeDate,
+            Timestamp afterDate);
+
+    List<InvoiceEntity> findAllByCustomerPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
+            Long phoneNumber, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit, String name);
 
     @Query(value = "SELECT * FROM invoice WHERE customer_phone_number = ?1 ORDER BY creation_date DESC LIMIT ?2 OFFSET ?3", nativeQuery = true)
     List<InvoiceEntity> findInvoicesByCustomerPhoneNumberWithOffset(Long userNumber, int limit, int offset);

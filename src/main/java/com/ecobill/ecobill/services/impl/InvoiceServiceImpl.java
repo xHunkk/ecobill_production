@@ -152,13 +152,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         String mostVisitedCompanyName = mostVisitedCompany != null ? mostVisitedCompany.getName()
                 : "No company visited";
 
-        double thisMonthSpending = invoices.stream()
+        double lastMonthSpending = invoices.stream()
                 .filter(invoice -> invoice.getCreationDate()
                         .after(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
                 .mapToDouble(InvoiceDto::getTotalAmount)
                 .sum();
 
-        double lastMonthSpending = invoices.stream()
+        double thisMonthSpending = invoices.stream()
                 .filter(invoice -> invoice.getCreationDate()
                         .before(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
                 .mapToDouble(InvoiceDto::getTotalAmount)
@@ -169,10 +169,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         statisticsHashMap.put("phoneNumber", phoneNumber);
         statisticsHashMap.put("averageSpent", String.format("%.2f", averageSpent));
         statisticsHashMap.put("mostVisitedCompany", mostVisitedCompanyName);
+        statisticsHashMap.put("invoice", invoices.get(0));
         statisticsHashMap.put("thisMonthSpendings", String.format("%.2f", thisMonthSpending));
         statisticsHashMap.put("lastMonthSpendings", String.format("%.2f", lastMonthSpending));
         statisticsHashMap.put("monthlySpendingsDifference",
-                String.format("%.2f", (thisMonthSpending - lastMonthSpending)));
+                String.format("%.2f", ((thisMonthSpending - lastMonthSpending) / lastMonthSpending) * 100));
 
         // List<String> userStatistics = new ArrayList<>();
         // userStatistics.add(String.valueOf(phoneNumber));
@@ -184,6 +185,20 @@ public class InvoiceServiceImpl implements InvoiceService {
         // lastMonthSpending)));
 
         return statisticsHashMap;
+    }
+
+    public List<InvoiceDto> getInvoiceByPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
+            Long phoneNumber, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
+            String name) {
+        List<InvoiceEntity> invoiceEntities = invoiceRepository
+                .findAllByCustomerPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(phoneNumber,
+                        beforeDate, afterDate, lowerLimit, upperLimit, name);
+        List<InvoiceDto> invoiceDtos = new ArrayList<>();
+        for (int i = 0; i < invoiceEntities.size(); i++) {
+            invoiceDtos.add(invoiceMapper.mapTo(invoiceEntities.get(i)));
+        }
+
+        return invoiceDtos;
     }
 
 }
