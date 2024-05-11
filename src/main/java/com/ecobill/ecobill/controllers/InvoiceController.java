@@ -26,7 +26,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -50,35 +49,6 @@ public class InvoiceController {
         this.invoiceItemService = invoiceItemService;
         this.invoiceMapper = invoiceMapper;
     }
-
-    // @PostMapping()
-    // public ResponseEntity<Void> createNewInvoice(@RequestBody Map<String, Object>
-    // requestBody) {
-    // try {
-    // Map<String, Object> eprMap = (Map<String, Object>) requestBody.get("epr");
-    // Map<String, Object> customerMap = (Map<String, Object>)
-    // requestBody.get("customer");
-    // Map<String, Object> invoiceMap = (Map<String, Object>)
-    // requestBody.get("invoice");
-    // Map<String, Object> subscriptionMap = (Map<String, Object>)
-    // requestBody.get("subscription");
-    // List<Map<String, Object>> invoiceItemsList = (List<Map<String, Object>>)
-    // requestBody.get("invoice_items");
-
-    // SubscriptionEntity subscriptionEntity =
-    // subscriptionService.createSubscription(subscriptionMap);
-    // EPREntity eprEntity = eprService.createEpr(eprMap, subscriptionEntity);
-    // CustomerEntity customerEntity = customerService.createCustomer(customerMap);
-    // InvoiceEntity invoiceEntity = invoiceService.createInvoice(invoiceMap,
-    // eprEntity, customerEntity);
-    // invoiceItemService.createInvoiceItem(invoiceItemsList, invoiceEntity);
-
-    // return ResponseEntity.status(HttpStatus.CREATED).build();
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    // }
-
-    // }
 
     @PostMapping()
     public InvoiceDto createNewInvoice(@RequestBody Map<String, Object> requestBody) {
@@ -104,7 +74,7 @@ public class InvoiceController {
 
     }
 
-    @GetMapping("/price_range")
+    @GetMapping("/filters/price_range")
     public List<InvoiceDto> findInvoiceByPriceRange(
             @RequestParam(name = "min", required = false) Long lowerLimit,
             @RequestParam(name = "max", required = false) Long upperLimit) {
@@ -113,17 +83,17 @@ public class InvoiceController {
         return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit);
     }
 
-    @GetMapping("/items")
+    @GetMapping("/filters/items")
     public List<InvoiceItemDto> findInvoiceItemsByQrCode(@RequestParam(name = "qr_code") Long qrCode) {
         return invoiceItemService.getInvoiceItemByQrCode(qrCode);
     }
 
-    @GetMapping("/categories")
+    @GetMapping("/filters/categories")
     public List<InvoiceDto> categorizeInvoices(@RequestParam(name = "category") String category) {
         return invoiceService.getInvoiceByEPRCategory(category);
     }
 
-    @GetMapping("/all_filters")
+    @GetMapping("/filters/all")
     public List<InvoiceDto> findInvoiceByCreationDateAndTotalAmountAndEprName(
             @RequestParam(name = "phone_number") Long phoneNumber,
             @RequestParam(name = "before_date") Timestamp beforeDate,
@@ -135,19 +105,19 @@ public class InvoiceController {
                 beforeDate, afterDate, lowerLimit, upperLimit, name);
     }
 
-    @GetMapping("/companies")
+    @GetMapping("/filters/companies")
     public List<InvoiceDto> findInvoiceByEPRName(@RequestParam(name = "company") String name) {
         return invoiceService.getInvoiceByEPRName(name);
     }
 
-    @GetMapping("/date")
+    @GetMapping("/filters/date")
     public List<InvoiceDto> findInvoiceByDateBetween(@RequestParam(name = "phone_number") Long phoneNumber,
             @RequestParam(name = "before_date") Timestamp beforeDate,
             @RequestParam(name = "after_date") Timestamp afterDate) {
         return invoiceService.getByCreationDateBetweenAndUserNumber(phoneNumber, beforeDate, afterDate);
     }
 
-    @GetMapping("/number_range")
+    @GetMapping("/filters/number_range")
     public List<InvoiceDto> findUserInvoiceInRange(Long userNumber, int start, int end) {
         return invoiceService.getInvoicesForUserInRange(userNumber, start, end);
     }

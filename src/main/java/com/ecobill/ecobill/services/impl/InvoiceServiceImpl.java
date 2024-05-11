@@ -117,7 +117,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end) {
         int limit = end - start + 1;
-        int offset = start - 1; // Assuming the first invoice has an index of 1
+        int offset = start - 1;
         try {
             return invoiceRepository.findInvoicesByCustomerPhoneNumberWithOffset(userNumber, limit, offset)
                     .stream()
@@ -174,15 +174,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         statisticsHashMap.put("lastMonthSpendings", String.format("%.2f", lastMonthSpending));
         statisticsHashMap.put("monthlySpendingsDifference",
                 String.format("%.2f", ((thisMonthSpending - lastMonthSpending) / lastMonthSpending) * 100));
-
-        // List<String> userStatistics = new ArrayList<>();
-        // userStatistics.add(String.valueOf(phoneNumber));
-        // userStatistics.add(String.format("%.2f", averageSpent));
-        // userStatistics.add(mostVisitedCompanyName);
-        // userStatistics.add(String.format("%.2f", thisMonthSpending));
-        // userStatistics.add(String.format("%.2f", lastMonthSpending));
-        // userStatistics.add(String.format("%.2f", (thisMonthSpending -
-        // lastMonthSpending)));
 
         return statisticsHashMap;
     }
