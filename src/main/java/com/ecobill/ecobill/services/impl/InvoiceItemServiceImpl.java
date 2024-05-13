@@ -50,8 +50,9 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public List<InvoiceItemDto> getInvoiceItemByQrCode(Long qrCode) {
-        List<InvoiceItemEntity> invoiceItemEntities = invoiceItemRepository.findByInvoiceQrCode(qrCode);
+    public List<InvoiceItemDto> getInvoiceItemByQrCode(Long qrCode, Long id) {
+        List<InvoiceItemEntity> invoiceItemEntities = invoiceItemRepository
+                .findByInvoiceQrCodeAndInvoiceCustomerId(qrCode, id);
         List<InvoiceItemDto> invoiceItemDtos = new ArrayList<>();
         for (int i = 0; i < invoiceItemEntities.size(); i++) {
             invoiceItemDtos.add(invoiceItemMapper.mapTo(invoiceItemEntities.get(i)));

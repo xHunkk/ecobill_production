@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin("*")
+@CrossOrigin
 @RestController
 @RequestMapping("/invoices")
 public class InvoiceController {
@@ -75,22 +75,24 @@ public class InvoiceController {
     }
 
     @GetMapping("/filters/price_range")
-    public List<InvoiceDto> findInvoiceByPriceRange(
+    public List<InvoiceDto> findInvoiceByPriceRange(@RequestParam(name = "id") Long id,
             @RequestParam(name = "min", required = false) Long lowerLimit,
             @RequestParam(name = "max", required = false) Long upperLimit) {
         lowerLimit = lowerLimit == null ? 0 : lowerLimit;
         upperLimit = upperLimit == null ? Long.MAX_VALUE : upperLimit;
-        return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit);
+        return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit, id);
     }
 
-    @GetMapping("/filters/items")
-    public List<InvoiceItemDto> findInvoiceItemsByQrCode(@RequestParam(name = "qr_code") Long qrCode) {
-        return invoiceItemService.getInvoiceItemByQrCode(qrCode);
+    @GetMapping("/items")
+    public List<InvoiceItemDto> findInvoiceItemsByQrCode(@RequestParam(name = "id") Long id,
+            @RequestParam(name = "qr_code") Long qrCode) {
+        return invoiceItemService.getInvoiceItemByQrCode(qrCode, id);
     }
 
     @GetMapping("/filters/categories")
-    public List<InvoiceDto> categorizeInvoices(@RequestParam(name = "category") String category) {
-        return invoiceService.getInvoiceByEPRCategory(category);
+    public List<InvoiceDto> categorizeInvoices(@RequestParam(name = "id") Long id,
+            @RequestParam(name = "category") String category) {
+        return invoiceService.getInvoiceByEPRCategory(category, id);
     }
 
     @GetMapping("/filters/all")
@@ -106,15 +108,16 @@ public class InvoiceController {
     }
 
     @GetMapping("/filters/companies")
-    public List<InvoiceDto> findInvoiceByEPRName(@RequestParam(name = "company") String name) {
-        return invoiceService.getInvoiceByEPRName(name);
+    public List<InvoiceDto> findInvoiceByEPRName(@RequestParam(name = "id") Long id,
+            @RequestParam(name = "company") String name) {
+        return invoiceService.getInvoiceByEPRName(name, id);
     }
 
     @GetMapping("/filters/date")
-    public List<InvoiceDto> findInvoiceByDateBetween(@RequestParam(name = "phone_number") Long phoneNumber,
+    public List<InvoiceDto> findInvoiceByDateBetween(@RequestParam(name = "id") Long id,
             @RequestParam(name = "before_date") Timestamp beforeDate,
             @RequestParam(name = "after_date") Timestamp afterDate) {
-        return invoiceService.getByCreationDateBetweenAndUserNumber(phoneNumber, beforeDate, afterDate);
+        return invoiceService.getByCreationDateBetween(id, beforeDate, afterDate);
     }
 
     @GetMapping("/filters/number_range")
@@ -123,8 +126,8 @@ public class InvoiceController {
     }
 
     @GetMapping("/statistics")
-    public HashMap<String, Object> getUserStatistics(@RequestParam(name = "phone_number") Long phoneNumber,
+    public HashMap<String, Object> getUserStatistics(@RequestParam(name = "id") Long id,
             @RequestParam(name = "months") int numberOfMonths) {
-        return invoiceService.getCustomerStatistics(phoneNumber, numberOfMonths);
+        return invoiceService.getCustomerStatistics(id, numberOfMonths);
     }
 }

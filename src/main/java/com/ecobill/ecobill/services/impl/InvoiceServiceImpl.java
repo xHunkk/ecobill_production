@@ -67,10 +67,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getInvoiceByEPRName(String name) {
+    public List<InvoiceDto> getInvoiceByEPRName(String name, Long id) {
         EPREntity eprEntity = eprRepository.findByName(name);
         try {
-            List<InvoiceDto> invoiceDtos = invoiceRepository.findAllByEpr(eprEntity)
+            List<InvoiceDto> invoiceDtos = invoiceRepository.findAllByEprAndCustomerId(eprEntity, id)
                     .stream()
                     .map(invoiceMapper::mapTo)
                     .collect(Collectors.toList());
@@ -81,9 +81,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getInvoiceByAmountLimits(Long min, Long max) {
+    public List<InvoiceDto> getInvoiceByAmountLimits(Long lowerLimit, Long upperLimit, Long id) {
         try {
-            return invoiceRepository.findAllByTotalAmountBetween(min, max).stream().map(invoiceMapper::mapTo)
+            return invoiceRepository.findAllByTotalAmountBetweenAndCustomerId(lowerLimit, upperLimit, id).stream()
+                    .map(invoiceMapper::mapTo)
                     .collect(Collectors.toList());
         } catch (NullPointerException e) {
             return null;
@@ -91,20 +92,20 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getInvoiceByEPRCategory(String category) {
+    public List<InvoiceDto> getInvoiceByEPRCategory(String category, Long id) {
         List<EPREntity> eprEntities = eprRepository.findAllByCategoryIgnoreCase(category);
         List<InvoiceDto> invoiceDtos = new ArrayList<>();
 
         for (EPREntity eprEntity : eprEntities) {
-            invoiceDtos.addAll(getInvoiceByEPRName(eprEntity.getName()));
+            invoiceDtos.addAll(getInvoiceByEPRName(eprEntity.getName(), id));
         }
         return invoiceDtos;
     }
 
     @Override
-    public List<InvoiceDto> getByCreationDateBetweenAndUserNumber(Long userNumber, Timestamp lower, Timestamp upper) {
+    public List<InvoiceDto> getByCreationDateBetween(Long id, Timestamp lower, Timestamp upper) {
         try {
-            return invoiceRepository.findAllByCustomerPhoneNumberAndCreationDateBetween(userNumber, lower, upper)
+            return invoiceRepository.findAllByCustomerIdAndCreationDateBetween(id, lower, upper)
                     .stream()
                     .map(invoiceMapper::mapTo)
                     .collect(Collectors.toList());
@@ -115,11 +116,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end) {
+    public List<InvoiceDto> getInvoicesForUserInRange(Long id, int start, int end) {
         int limit = end - start + 1;
         int offset = start - 1;
         try {
-            return invoiceRepository.findInvoicesByCustomerPhoneNumberWithOffset(userNumber, limit, offset)
+            return invoiceRepository.findInvoicesByCustomerIdWithOffset(id, limit, offset)
                     .stream()
                     .map(invoiceMapper::mapTo)
                     .collect(Collectors.toList());
@@ -130,11 +131,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public HashMap<String, Object> getCustomerStatistics(Long phoneNumber, int numberOfMonths) {
+    public HashMap<String, Object> getCustomerStatistics(Long id, int numberOfMonths) {
         Timestamp lower = Timestamp.valueOf(LocalDateTime.now().minusMonths(numberOfMonths));
         Timestamp upper = Timestamp.valueOf(LocalDateTime.now());
 
-        List<InvoiceDto> invoices = getByCreationDateBetweenAndUserNumber(phoneNumber, lower, upper);
+        List<InvoiceDto> invoices = getByCreationDateBetween(id, lower, upper);
 
         double averageSpent = invoices.stream()
                 .mapToDouble(InvoiceDto::getTotalAmount)
@@ -166,7 +167,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         HashMap<String, Object> statisticsHashMap = new HashMap<>();
 
-        statisticsHashMap.put("phoneNumber", phoneNumber);
+        statisticsHashMap.put("id", id);
         statisticsHashMap.put("averageSpent", String.format("%.2f", averageSpent));
         statisticsHashMap.put("mostVisitedCompany", mostVisitedCompanyName);
         statisticsHashMap.put("invoice", invoices.get(0));

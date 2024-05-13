@@ -9,6 +9,6 @@ import com.ecobill.ecobill.domain.entities.InvoiceEntity;
 public interface InvoiceItemService {
     void createInvoiceItem(List<Map<String, Object>> invoiceItemsList, InvoiceEntity invoiceEntity);
 
-    List<InvoiceItemDto> getInvoiceItemByQrCode(Long qrCode);
+    List<InvoiceItemDto> getInvoiceItemByQrCode(Long qrCode, Long id);
 
 }

@@ -14,13 +14,13 @@ public interface InvoiceService {
 
     InvoiceEntity createInvoice(Map<String, Object> invoiceMap, EPREntity eprEntity, CustomerEntity customerEntity);
 
-    List<InvoiceDto> getInvoiceByEPRName(String name);
+    List<InvoiceDto> getInvoiceByEPRName(String name, Long id);
 
-    List<InvoiceDto> getInvoiceByAmountLimits(Long min, Long max);
+    List<InvoiceDto> getInvoiceByAmountLimits(Long lowerLimit, Long upperLimit, Long id);
 
-    List<InvoiceDto> getInvoiceByEPRCategory(String category);
+    List<InvoiceDto> getInvoiceByEPRCategory(String category, Long id);
 
-    List<InvoiceDto> getByCreationDateBetweenAndUserNumber(Long userNumber, Timestamp lower, Timestamp upper);
+    List<InvoiceDto> getByCreationDateBetween(Long id, Timestamp lower, Timestamp upper);
 
     List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end);
 
