@@ -3,7 +3,7 @@
         "subscription_number": 1111111111
     },
     "epr": {
-        "logo": "https://imgur.com/lwbJNOW",
+        "logo": "https://i.imgur.com/uYFJnjt.png",
         "commercial_register": 1234567890,
         "tax_number": 111112222233333,
         "name": "STC",
@@ -11,23 +11,26 @@
         "category": "Communication Company"
     },
     "customer": {
-        "phone_number": 966553604747
+        "phone_number": 966536922003
     },
     "invoice": {
-        "qr_code": 12345678900,
-        "created_at": "2024-04-05",
-        "total_amount": 750.00
+        "qr_code": 52345678900,
+        "created_at": "2024-05-15",
+        "total_amount": 750.00,
+        "vat_amount": 112.5,
+        "total_amount_with_vat": 862.5,
+        "payment_method": "VISA"
     },
     "invoice_items": [
         {
-            "name": "Product Q",
-            "price": 120.00,
+            "name": "Internet Subscription",
+            "price": 287.5,
             "quantity": 2
         },
         {
-            "name": "Product R",
-            "price": 222.00,
-            "quantity": 3
+            "name": "Calls Subscription",
+            "price": 287.5,
+            "quantity": 1
         }
     ]
 }

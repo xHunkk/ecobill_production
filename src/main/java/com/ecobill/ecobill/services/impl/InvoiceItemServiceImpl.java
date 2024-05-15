@@ -36,7 +36,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
             for (Map<String, Object> item : invoiceItemsList) {
                 InvoiceItemEntity invoiceItemEntity = InvoiceItemEntity.builder()
                         .name((String) item.get("name"))
-                        .price(conversionUtils.doubleToLongConversion((Double) item.get("price")))
+                        .price((Double) item.get("price"))
                         .quantity((Integer) item.get("quantity"))
                         .invoice(invoiceEntity)
                         .build();

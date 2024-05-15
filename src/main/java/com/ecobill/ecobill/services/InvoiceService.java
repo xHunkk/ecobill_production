@@ -20,14 +20,14 @@ public interface InvoiceService {
 
     List<InvoiceDto> getInvoiceByEPRCategory(String category, Long id);
 
-    List<InvoiceDto> getByCreationDateBetween(Long id, Timestamp lower, Timestamp upper);
+    List<InvoiceDto> getInvoiceByCreationDateBetween(Long id, Timestamp lower, Timestamp upper);
 
-    List<InvoiceDto> getInvoicesForUserInRange(Long userNumber, int start, int end);
+    List<InvoiceDto> getInvoiceInRangeBetween(Long phoneNumber, int start, int end);
 
-    HashMap<String, Object> getCustomerStatistics(Long phoneNumber, int numberOfMonths);
+    HashMap<String, Object> getCustomerStatistics(Long id, int numberOfMonths);
 
-    List<InvoiceDto> getInvoiceByPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
-            Long phoneNumber, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
+    List<InvoiceDto> getInvoiceByCreationDateBetweenAndTotalAmountBetweenAndEprName(
+            Long id, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
             String name);
 
 }

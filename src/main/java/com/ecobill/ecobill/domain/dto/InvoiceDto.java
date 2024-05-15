@@ -28,6 +28,12 @@ public class InvoiceDto {
 
     private Date creationDate;
 
-    private Long totalAmount;
+    private Double totalAmount;
+
+    private Double vatAmount;
+
+    private Double totalAmountWithVat;
+
+    private String paymentMethod;
 
 }

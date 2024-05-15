@@ -6,12 +6,13 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class JwtUtils {
+public class JwtTokenUtil {
 
     public byte[] generateSecretKey(int keyLength) {
         SecureRandom secureRandom = new SecureRandom();
@@ -23,7 +24,7 @@ public class JwtUtils {
     private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS512);
 
     public String generateToken(String id) {
-        long expirationTimeInMillieSecondes = 86400000;
+        long expirationTimeInMillieSecondes = 1800000;
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillieSecondes);
 
         String token = Jwts.builder()
@@ -35,6 +36,25 @@ public class JwtUtils {
 
         return token;
 
+    }
+
+    public boolean validateTokenSignature(String token) {
+        try {
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public String extractIdFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return claims.get("Id", String.class);
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+        return claims.getExpiration();
     }
 
 }

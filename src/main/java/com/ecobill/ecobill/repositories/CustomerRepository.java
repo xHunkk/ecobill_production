@@ -11,6 +11,8 @@ import com.ecobill.ecobill.domain.entities.CustomerEntity;
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Long> {
     Optional<CustomerEntity> findByPhoneNumber(Long phoneNumber);
 
+    Optional<CustomerEntity> findById(Long id);
+
     Optional<CustomerEntity> findByEmailAndPassword(String email, String password);
 
     Optional<CustomerEntity> findByEmail(String email);

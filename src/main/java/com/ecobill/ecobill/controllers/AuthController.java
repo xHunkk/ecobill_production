@@ -3,7 +3,9 @@ package com.ecobill.ecobill.controllers;
 import com.ecobill.ecobill.domain.dto.CustomerDto;
 import com.ecobill.ecobill.domain.dto.JwtResponseDto;
 import com.ecobill.ecobill.services.AuthService;
-import com.ecobill.ecobill.utils.JwtUtils;
+import com.ecobill.ecobill.utils.JwtTokenUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private AuthService authService;
-    private JwtUtils jwtUtils;
+    private JwtTokenUtil jwtUtils;
 
-    public AuthController(AuthService authService, JwtUtils jwtUtils) {
+    public AuthController(AuthService authService, JwtTokenUtil jwtUtils) {
         this.authService = authService;
         this.jwtUtils = jwtUtils;
     }
@@ -51,14 +53,15 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponseDto(token, authenticatedCustomer.getId()));
     }
 
-    @PatchMapping("/{phoneNumber}")
-    public CustomerDto editCustomerInfo(@PathVariable Long phoneNumber,
-            @RequestBody CustomerDto customerDto) {
+    @PatchMapping("/{id}")
+    public CustomerDto editCustomerInfo(@PathVariable Long id,
+            @RequestBody CustomerDto customerDto, HttpServletRequest request) {
+
         if (customerDto.getPhoneNumber() != null) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             return null;
         }
-        return authService.updateCustomer(phoneNumber, customerDto);
+        return authService.updateCustomer(id, customerDto);
 
     }
 }

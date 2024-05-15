@@ -1,5 +1,6 @@
 package com.ecobill.ecobill.services.impl;
 
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,9 @@ import com.ecobill.ecobill.domain.entities.CustomerEntity;
 import com.ecobill.ecobill.mappers.Mapper;
 import com.ecobill.ecobill.repositories.CustomerRepository;
 import com.ecobill.ecobill.services.AuthService;
+import com.ecobill.ecobill.utils.JwtTokenUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -20,23 +24,20 @@ public class AuthServiceImpl implements AuthService {
 
     private PasswordEncoder passwordEncoder;
     private Mapper<CustomerEntity, CustomerDto> customerMapper;
+    private JwtTokenUtil jwtTokenUtil;
 
     public AuthServiceImpl(CustomerRepository customerRepository, PasswordEncoder passwordEncoder,
-            Mapper<CustomerEntity, CustomerDto> customerMapper) {
+            Mapper<CustomerEntity, CustomerDto> customerMapper, JwtTokenUtil jwtTokenUtil) {
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.customerMapper = customerMapper;
-
+        this.jwtTokenUtil = jwtTokenUtil;
     }
 
     @Override
     public CustomerDto signUp(CustomerDto customerDto) {
         if (customerDto.getPhoneNumber() == null || customerDto.getPhoneNumber().describeConstable().isEmpty()) {
             throw new IllegalArgumentException("Phone number cannot be null or empty");
-        }
-
-        if (customerRepository.existsByPhoneNumber(customerDto.getPhoneNumber())) {
-            throw new IllegalArgumentException("Phone number is already taken");
         }
 
         CustomerEntity customerEntity = CustomerEntity.builder()
@@ -84,8 +85,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public CustomerDto updateCustomer(Long phoneNumber, CustomerDto customerDto) {
-        CustomerEntity customerEntity = customerRepository.findByPhoneNumber(phoneNumber)
+    public CustomerDto updateCustomer(Long id, CustomerDto customerDto) {
+        CustomerEntity customerEntity = customerRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Customer not found"));
 
         if (customerDto.getFirstName() != null) {
@@ -105,6 +106,30 @@ public class AuthServiceImpl implements AuthService {
         }
 
         return customerMapper.mapTo(customerRepository.save(customerEntity));
+
+    }
+
+    public Long authenticateToken(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
+
+            if (jwtTokenUtil.validateTokenSignature(token)) {
+                String id = jwtTokenUtil.extractIdFromToken(token);
+                Date expirationDate = jwtTokenUtil.getExpirationDateFromToken(token);
+
+                if (expirationDate != null && expirationDate.after(new Date())) {
+                    return Long.parseLong(id);
+                } else {
+                    throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+                }
+            } else {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid Token Signature");
+            }
+        } else {
+            return null;
+        }
 
     }
 

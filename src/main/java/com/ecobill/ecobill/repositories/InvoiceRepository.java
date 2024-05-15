@@ -21,8 +21,8 @@ public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Integer>
         List<InvoiceEntity> findAllByCustomerIdAndCreationDateBetween(Long id, Timestamp beforeDate,
                         Timestamp afterDate);
 
-        List<InvoiceEntity> findAllByCustomerPhoneNumberAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
-                        Long phoneNumber, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
+        List<InvoiceEntity> findAllByCustomerIdAndCreationDateBetweenAndTotalAmountBetweenAndEprName(
+                        Long id, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
                         String name);
 
         @Query(value = "SELECT * FROM invoice WHERE customer_id = ?1 ORDER BY creation_date DESC LIMIT ?2 OFFSET ?3", nativeQuery = true)

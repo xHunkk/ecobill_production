@@ -17,7 +17,7 @@ public class InvoiceItemDto {
 
     private String name;
 
-    private Long price;
+    private Double price;
 
     private int quantity;
 
