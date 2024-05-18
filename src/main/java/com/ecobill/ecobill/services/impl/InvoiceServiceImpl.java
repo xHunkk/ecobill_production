@@ -141,7 +141,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         List<InvoiceDto> invoices = getInvoiceByCreationDateBetween(id, lower, upper);
 
         double averageSpent = invoices.stream()
-                .mapToDouble(InvoiceDto::getTotalAmount)
+                .mapToDouble(InvoiceDto::getTotalAmountWithVat)
                 .average()
                 .orElse(0.0);
 
@@ -159,13 +159,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         double thisMonthSpending = invoices.stream()
                 .filter(invoice -> invoice.getCreationDate()
                         .after(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
-                .mapToDouble(InvoiceDto::getTotalAmount)
+                .mapToDouble(InvoiceDto::getTotalAmountWithVat)
                 .sum();
 
         double lastMonthSpending = invoices.stream()
                 .filter(invoice -> invoice.getCreationDate()
                         .before(Timestamp.valueOf(LocalDateTime.now().minusMonths(1))))
-                .mapToDouble(InvoiceDto::getTotalAmount)
+                .mapToDouble(InvoiceDto::getTotalAmountWithVat)
                 .sum();
 
         HashMap<String, Object> statisticsHashMap = new HashMap<>();
@@ -174,6 +174,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         statisticsHashMap.put("averageSpent", String.format("%.2f", averageSpent));
         statisticsHashMap.put("mostVisitedCompany", mostVisitedCompanyName);
         statisticsHashMap.put("mostVisitedCompanyLogo", mostVisitedCompany.getLogo());
+        statisticsHashMap.put("mostVisitedCompanyCategory", mostVisitedCompany.getCategory());
         statisticsHashMap.put("invoice", invoices.get(0));
         statisticsHashMap.put("thisMonthSpendings", String.format("%.2f", thisMonthSpending));
         statisticsHashMap.put("lastMonthSpendings", String.format("%.2f", lastMonthSpending));

@@ -1,0 +1,259 @@
+[
+    {
+        "subscription": {
+            "subscription_number": 1000000001
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/uYFJnjt.png",
+            "commercial_register": 1234567890,
+            "tax_number": 111112222233333,
+            "name": "STC",
+            "full_name": "Saudi Telecom Company",
+            "category": "Communication Company"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52345678900,
+            "created_at": "2024-05-15",
+            "total_amount": 750.00,
+            "vat_amount": 112.5,
+            "total_amount_with_vat": 862.5,
+            "payment_method": "VISA"
+        },
+        "invoice_items": [
+            {
+                "name": "Internet Subscription",
+                "price": 287.5,
+                "quantity": 2
+            },
+            {
+                "name": "Calls Subscription",
+                "price": 287.5,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000002
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/cEYKS5g.png",
+            "commercial_register": 1000000581,
+            "tax_number": 300000000000001,
+            "name": "Centrepoint",
+            "full_name": "ICONIC",
+            "category": "Clothes Shop"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52412338126,
+            "created_at": "2024-04-15 11:30:36.54",
+            "total_amount": 200.00,
+            "vat_amount": 30.00,
+            "total_amount_with_vat": 230.00,
+            "payment_method": "Mada"
+        },
+        "invoice_items": [
+            {
+                "name": "clothes A",
+                "price": 150.0,
+                "quantity": 1
+            },
+            {
+                "name": "clothes B",
+                "price": 70.58,
+                "quantity": 1
+            },
+            {
+                "name": "clothes C",
+                "price": 30.12,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000003
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/8fNTCrw.jpeg",
+            "commercial_register": 1000000642,
+            "tax_number": 300000000000002,
+            "name": "DeepFries",
+            "full_name": "Deep Fries",
+            "category": "Restaurant"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52415238126,
+            "created_at": "2024-05-01",
+            "total_amount": 25.00,
+            "vat_amount": 3.75,
+            "total_amount_with_vat": 28.75,
+            "payment_method": "Apple Pay"
+        },
+        "invoice_items": [
+            {
+                "name": "Deep signeture ",
+                "price": 25.00,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000004
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/94FHYU1.png",
+            "commercial_register": 2051029841,
+            "tax_number": 300468781910003,
+            "name": "Extra",
+            "full_name": "Extra Store",
+            "category": "Electronics Company"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52925238126,
+            "created_at": "2024-05-02",
+            "total_amount": 100.00,
+            "vat_amount": 15.00,
+            "total_amount_with_vat": 115.0,
+            "payment_method": "Cash"
+        },
+        "invoice_items": [
+            {
+                "name": "BackBag ",
+                "price": 100.00,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000005
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/gXiOQCU.png",
+            "commercial_register": 1010032264,
+            "tax_number": 300056289500003,
+            "name": "Hunger Station",
+            "full_name": "HungerStation",
+            "category": "Restaurant"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52957238996,
+            "created_at": "2024-04-23",
+            "total_amount": 60.00,
+            "vat_amount": 9.00,
+            "total_amount_with_vat": 69.0,
+            "payment_method": "Apple Pay"
+        },
+        "invoice_items": [
+            {
+                "name": "Shawrma",
+                "price": 50.00,
+                "quantity": 2
+            },
+            {
+                "name": "Orange Juice",
+                "price": 10.50,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000006
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/wx33PFv.jpeg",
+            "commercial_register": 1010032267,
+            "tax_number": 300056289500009,
+            "name": "Jarir",
+            "full_name": "jarir bookstore",
+            "category": "Bookstore"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 52925938976,
+            "created_at": "2024-05-17",
+            "total_amount": 2000.00,
+            "vat_amount": 300.00,
+            "total_amount_with_vat": 2300.0,
+            "payment_method": "Mada"
+        },
+        "invoice_items": [
+            {
+                "name": "Playstation 5",
+                "price": 1750.75,
+                "quantity": 1
+            },
+            {
+                "name": "Playstation 5 Controller",
+                "price": 250.25,
+                "quantity": 1
+            }
+        ]
+    },
+    {
+        "subscription": {
+            "subscription_number": 1000000007
+        },
+        "epr": {
+            "logo": "https://i.imgur.com/hD1iiMv.png",
+            "commercial_register": 1010032219,
+            "tax_number": 300056589500009,
+            "name": "Panda",
+            "full_name": "Hyper Panda",
+            "category": "Supermarket"
+        },
+        "customer": {
+            "phone_number": 966536922003
+        },
+        "invoice": {
+            "qr_code": 25925578996,
+            "created_at": "2024-05-15",
+            "total_amount": 100.00,
+            "vat_amount": 15.00,
+            "total_amount_with_vat": 115.0,
+            "payment_method": "VISA"
+        },
+        "invoice_items": [
+            {
+                "name": "Almarai Milk",
+                "price": 20.26,
+                "quantity": 2
+            },
+            {
+                "name": "Eggs",
+                "price": 30.15,
+                "quantity": 15
+            },
+            {
+                "name": "Bread",
+                "price": 10.00,
+                "quantity": 10
+            },
+            {
+                "name": "Pineapple",
+                "price": 40.00,
+                "quantity": 10
+            }
+        ]
+    }
+]
