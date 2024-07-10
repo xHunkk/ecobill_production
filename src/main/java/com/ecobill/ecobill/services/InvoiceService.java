@@ -14,15 +14,15 @@ public interface InvoiceService {
 
     InvoiceEntity createInvoice(Map<String, Object> invoiceMap, EPREntity eprEntity, CustomerEntity customerEntity);
 
-    List<InvoiceDto> getInvoiceByEPRName(String name, Long id);
+    List<InvoiceDto> findInvoicesByCustomerIdAndEprName(Long customerId, String eprName);
 
-    List<InvoiceDto> getInvoiceByAmountLimits(Long lowerLimit, Long upperLimit, Long id);
+    List<InvoiceDto> findInvoicesByCustomerIdAndAmountRangeWithVat(Long customerId, double minAmount, double maxAmount);
 
-    List<InvoiceDto> getInvoiceByEPRCategory(String category, Long id);
+    List<InvoiceDto> findInvoicesByCustomerIdAndCategory(Long customerId, String category);
 
     List<InvoiceDto> getInvoiceByCreationDateBetween(Long id, Timestamp lower, Timestamp upper);
 
-    List<InvoiceDto> getInvoiceInRangeBetween(Long phoneNumber, int start, int end);
+    List<InvoiceDto> findInvoicesByCustomerIdInRange(Long customerId, int start, int end);
 
     HashMap<String, Object> getCustomerStatistics(Long id, int numberOfMonths);
 
