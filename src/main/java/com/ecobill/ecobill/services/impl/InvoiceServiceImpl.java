@@ -84,6 +84,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public List<InvoiceDto> getInvoiceByEPRNameDev(String name) {
+        return List.of();
+    }
+
+    @Override
     public List<InvoiceDto> getInvoiceByAmountLimits(Long lowerLimit, Long upperLimit, Long id) {
         try {
             return invoiceRepository.findAllByTotalAmountBetweenAndCustomerId(lowerLimit, upperLimit, id).stream()
@@ -92,6 +97,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         } catch (NullPointerException e) {
             return null;
         }
+    }
+
+    @Override
+    public List<InvoiceDto> getInvoiceByAmountLimitsDev(Long lowerLimit, Long upperLimit) {
+        return List.of();
     }
 
     @Override
@@ -106,6 +116,11 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public List<InvoiceDto> getInvoiceByEPRCategoryDev(String category) {
+        return List.of();
+    }
+
+    @Override
     public List<InvoiceDto> getInvoiceByCreationDateBetween(Long id, Timestamp lower, Timestamp upper) {
         try {
             return invoiceRepository.findAllByCustomerIdAndCreationDateBetween(id, lower, upper)
@@ -116,6 +131,11 @@ public class InvoiceServiceImpl implements InvoiceService {
             System.out.println(e);
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public List<InvoiceDto> getInvoiceByCreationDateBetweenDev(Timestamp lower, Timestamp upper) {
+        return List.of();
     }
 
     @Override
@@ -196,6 +216,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         return invoiceDtos;
+    }
+
+    @Override
+    public List<InvoiceDto> getInvoiceByCreationDateBetweenAndTotalAmountBetweenAndEprNameDev(Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit, String name) {
+        return List.of();
     }
 
 }

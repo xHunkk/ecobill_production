@@ -15,12 +15,16 @@ public interface InvoiceService {
     InvoiceEntity createInvoice(Map<String, Object> invoiceMap, EPREntity eprEntity, CustomerEntity customerEntity);
 
     List<InvoiceDto> getInvoiceByEPRName(String name, Long id);
+    List<InvoiceDto> getInvoiceByEPRNameDev(String name);
 
     List<InvoiceDto> getInvoiceByAmountLimits(Long lowerLimit, Long upperLimit, Long id);
+    List<InvoiceDto> getInvoiceByAmountLimitsDev(Long lowerLimit, Long upperLimit);
 
     List<InvoiceDto> getInvoiceByEPRCategory(String category, Long id);
+    List<InvoiceDto> getInvoiceByEPRCategoryDev(String category);
 
     List<InvoiceDto> getInvoiceByCreationDateBetween(Long id, Timestamp lower, Timestamp upper);
+    List<InvoiceDto> getInvoiceByCreationDateBetweenDev(Timestamp lower, Timestamp upper);
 
     List<InvoiceDto> getInvoiceInRangeBetween(Long phoneNumber, int start, int end);
 
@@ -28,6 +32,9 @@ public interface InvoiceService {
 
     List<InvoiceDto> getInvoiceByCreationDateBetweenAndTotalAmountBetweenAndEprName(
             Long id, Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
+            String name);
+    List<InvoiceDto> getInvoiceByCreationDateBetweenAndTotalAmountBetweenAndEprNameDev(
+            Timestamp beforeDate, Timestamp afterDate, Long lowerLimit, long upperLimit,
             String name);
 
 }

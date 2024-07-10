@@ -60,4 +60,10 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
         return invoiceItemDtos;
     }
 
+    @Override
+    public List<InvoiceItemDto> getInvoiceItemByQrCodeDev(Long qrCode) {
+        return List.of();
+    }
+
+
 }

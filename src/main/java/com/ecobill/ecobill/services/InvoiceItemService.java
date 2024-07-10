@@ -10,5 +10,6 @@ public interface InvoiceItemService {
     void createInvoiceItem(List<Map<String, Object>> invoiceItemsList, InvoiceEntity invoiceEntity);
 
     List<InvoiceItemDto> getInvoiceItemByQrCode(Long qrCode, Long id);
+    List<InvoiceItemDto> getInvoiceItemByQrCodeDev(Long qrCode);
 
 }
