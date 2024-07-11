@@ -45,24 +45,24 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public InvoiceEntity createInvoice(Map<String, Object> invoiceMap, EPREntity eprEntity,
-            CustomerEntity customerEntity) {
+    public InvoiceEntity createInvoice(Map<String, Object> invoiceMap, EPREntity eprEntity, CustomerEntity customerEntity) {
         HashMap<String, Object> invoiceHashMap = new HashMap<>(invoiceMap);
         InvoiceEntity invoiceEntity = null;
 
         try {
             invoiceEntity = InvoiceEntity.builder()
                     .qrCode((Long) invoiceHashMap.get("qr_code"))
-                    .epr(eprEntity).eprTaxNumber(eprEntity).customer(customerEntity)
-                    .creationDate(conversionUtils.StringToDateConversion((String) invoiceHashMap.get("created_at")))
+                    .epr(eprEntity)
+                    .eprTaxNumber(eprEntity)
+                    .customer(customerEntity)
+                    .creationDate(ConversionUtils.StringToTimestamp((String) invoiceHashMap.get("created_at")))
                     .totalAmount((Double) invoiceHashMap.get("total_amount"))
                     .vatAmount((Double) invoiceHashMap.get("vat_amount"))
                     .totalAmountWithVat((Double) invoiceHashMap.get("total_amount_with_vat"))
                     .paymentMethod((String) invoiceHashMap.get("payment_method"))
                     .build();
 
-            Optional<InvoiceEntity> invoiceEntityOptional = invoiceRepository
-                    .findByQrCode(invoiceEntity.getQrCode());
+            Optional<InvoiceEntity> invoiceEntityOptional = invoiceRepository.findByQrCode(invoiceEntity.getQrCode());
 
             if (!invoiceEntityOptional.isPresent()) {
                 return invoiceRepository.save(invoiceEntity);
@@ -73,8 +73,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             System.out.println(e);
             return null;
         }
-
     }
+
 
 
     public List<InvoiceDto> findInvoicesByCustomerIdAndEprName(Long customerId, String eprName) {
