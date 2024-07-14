@@ -1,0 +1,26 @@
+[
+  {
+    "phoneNumber": 966536922003,
+    "firstName": "Faris",
+    "lastName": "Bisher",
+    "username": "hunk",
+    "password": "hunk123",
+    "email": "fares@gmail.com"
+  },
+  {
+    "phoneNumber": 966552636776,
+    "firstName": "Abdullah",
+    "lastName": "Alzubi",
+    "username": "aouz",
+    "password": "aouz123",
+    "email": "aouz@gmail.com"
+  },
+  {
+    "phoneNumber": 966557762851,
+    "firstName": "Mohammed",
+    "lastName": "Karrar",
+    "username": "breeze",
+    "password": "breeze123",
+    "email": "aouz@gmail.com"
+  }
+]
