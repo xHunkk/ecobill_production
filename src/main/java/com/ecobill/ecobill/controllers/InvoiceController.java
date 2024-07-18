@@ -33,6 +33,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 @CrossOrigin
 @RestController
 @RequestMapping("/invoices")
@@ -83,23 +87,22 @@ public class InvoiceController {
 
     }
 
+
     @GetMapping("/filters/price_range")
-    public List<InvoiceDto> findInvoiceByPriceRange(
-            @RequestParam(name = "min", required = false) Long lowerLimit,
-            @RequestParam(name = "max", required = false) Long upperLimit,
+    public List<InvoiceDto> findUserInvoicesByAmountRangeWithVat(
+            @RequestParam(name = "minAmount") double minAmount,
+            @RequestParam(name = "maxAmount") double maxAmount,
             HttpServletRequest request) {
 
-        Long id = authService.authenticateToken(request);
+        Long customerId = authService.authenticateToken(request); // Assuming you have authService
 
-        if (id != null) {
-            lowerLimit = lowerLimit == null ? 0 : lowerLimit;
-            upperLimit = upperLimit == null ? Long.MAX_VALUE : upperLimit;
-            return invoiceService.getInvoiceByAmountLimits(lowerLimit, upperLimit, id);
+        if (customerId != null) {
+            return invoiceService.findInvoicesByCustomerIdAndAmountRangeWithVat(customerId, minAmount, maxAmount);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
         }
-
     }
+
 
     @GetMapping("/items")
     public List<InvoiceItemDto> findInvoiceItemsByQrCode(HttpServletRequest request,
@@ -114,18 +117,21 @@ public class InvoiceController {
         }
     }
 
+
     @GetMapping("/filters/categories")
-    public List<InvoiceDto> categorizeInvoices(HttpServletRequest request,
-            @RequestParam(name = "category") String category) {
+    public List<InvoiceDto> findUserInvoicesByCategory(
+            @RequestParam(name = "category") String category,
+            HttpServletRequest request) {
 
-        Long id = authService.authenticateToken(request);
+        Long customerId = authService.authenticateToken(request); // Assuming you have authService
 
-        if (id != null) {
-            return invoiceService.getInvoiceByEPRCategory(category, id);
+        if (customerId != null) {
+            return invoiceService.findInvoicesByCustomerIdAndCategory(customerId, category);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
         }
     }
+
 
     @GetMapping("/filters/all")
     public List<InvoiceDto> findInvoiceByCreationDateAndTotalAmountAndEprName(HttpServletRequest request,
@@ -146,18 +152,19 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping("/filters/companies")
-    public List<InvoiceDto> findInvoiceByEPRName(HttpServletRequest request,
-            @RequestParam(name = "company") String name) {
 
+    @GetMapping("/filters/companies")
+    public List<InvoiceDto> findUserInvoicesByEprName(@RequestParam(name = "epr_name") String eprName,
+                                                      HttpServletRequest request) {
         Long id = authService.authenticateToken(request);
 
         if (id != null) {
-            return invoiceService.getInvoiceByEPRName(name, id);
+            return invoiceService.findInvoicesByCustomerIdAndEprName(id, eprName);
         } else {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
         }
     }
+
 
     @GetMapping("/filters/date")
     public List<InvoiceDto> findInvoiceByDateBetween(HttpServletRequest request,
@@ -175,13 +182,22 @@ public class InvoiceController {
     }
 
     @GetMapping("/filters/number_range")
-    public List<InvoiceDto> findUserInvoiceInRange(Long userNumber, int start, int end) {
-        return invoiceService.getInvoiceInRangeBetween(userNumber, start, end);
+    public List<InvoiceDto> findUserInvoiceInRange(@RequestParam(name = "start") int start,
+                                                   @RequestParam(name = "end") int end,
+                                                   HttpServletRequest request) {
+        Long id = authService.authenticateToken(request);
+
+        if (id != null) {
+            return invoiceService.findInvoicesByCustomerIdInRange(id, start, end);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized access");
+        }
     }
 
+
+
     @GetMapping("/statistics")
-    public HashMap<String, Object> getUserStatistics(
-            @RequestParam(name = "months") int numberOfMonths, HttpServletRequest request) {
+    public HashMap<String, Object> getUserStatistics(@RequestParam(name = "months") int numberOfMonths, HttpServletRequest request) {
 
         Long id = authService.authenticateToken(request);
 

@@ -15,6 +15,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
@@ -43,7 +46,7 @@ public class InvoiceEntity {
     @JoinColumn(name = "customer_phone_number", referencedColumnName = "phone_number")
     private CustomerEntity customer;
 
-    private Date creationDate;
+    private Timestamp creationDate;
 
     private Double totalAmount;
 
